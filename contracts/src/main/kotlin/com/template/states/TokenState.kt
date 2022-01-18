@@ -8,8 +8,10 @@ import net.corda.core.identity.Party
 
 @BelongsToContract(TokenContract::class)
 data class TokenState(
+    // ① TokenStateが正しい型のパラメータを持つこと
     val sender: Party,
     val receiver: Party,
     val amount: Int,
+    // ③ senderとreceiverがParticipantsであること
     override val participants: List<AbstractParty> = listOf(sender, receiver)
-) : ContractState
+) : ContractState // ② ContractStateであること

@@ -53,7 +53,15 @@ class FlowTests {
         network.stopNodes()
     }
 
-    @Test
+    // TODO:
+    //  ① 正しいノータリーを使用していること
+    //  ② 正しいStateをoutputとしていること
+    //  ③ 正しいコマンドを使用していること
+    //  ④ 正しい署名者を指定していること
+    //  ⑤ 正しいContractを使用していること
+    //  ⑥ なんですかこれは
+
+    @Test // ① 正しいノータリーを使用していること
     fun transactionConstructedByFlowUsesTheCorrectNotary() {
         val signedTransaction = runTokenSendFlowInitiator()
 
@@ -63,7 +71,7 @@ class FlowTests {
         assertEquals(notary, output.notary)
     }
 
-    @Test
+    @Test // ② 正しいStateをoutputとしていること
     fun transactionConstructedByFlowHasOneTokenStateOutputWithTheCorrectAmountAndOwner() {
         val signedTransaction = runTokenSendFlowInitiator()
 
@@ -74,16 +82,7 @@ class FlowTests {
         assertEquals(99, output.amount)
     }
 
-    @Test
-    fun transactionConstructedByFlowHasOneOutputUsingTheCorrectContract() {
-        val signedTransaction = runTokenSendFlowInitiator()
-        assertEquals(1, signedTransaction.tx.outputStates.size)
-        val output = signedTransaction.tx.outputs.single()
-
-        assertEquals(TokenContract.ID, output.contract)
-    }
-
-    @Test
+    @Test // ③ 正しいコマンドを使用していること
     fun transactionConstructedByFlowHasOneIssueCommand() {
         val signedTransaction = runTokenSendFlowInitiator()
         assertEquals(1, signedTransaction.tx.commands.size)
@@ -92,7 +91,7 @@ class FlowTests {
         assert(command.value is TokenContract.Commands.Create)
     }
 
-    @Test
+    @Test // ④ 正しい署名者を指定していること
     fun transactionConstructedByFlowHasOneCommandWithTheIssuerAndTheOwnerAsASigners() {
         val signedTransaction = runTokenSendFlowInitiator()
         assertEquals(1, signedTransaction.tx.commands.size)
@@ -103,7 +102,16 @@ class FlowTests {
         assertTrue(command.signers.contains(bob.owningKey))
     }
 
-    @Test
+    @Test // ⑤ 正しいContractを使用していること
+    fun transactionConstructedByFlowHasOneOutputUsingTheCorrectContract() {
+        val signedTransaction = runTokenSendFlowInitiator()
+        assertEquals(1, signedTransaction.tx.outputStates.size)
+        val output = signedTransaction.tx.outputs.single()
+
+        assertEquals(TokenContract.ID, output.contract)
+    }
+
+    @Test // ⑥ なんですかこれは
     fun transactionConstructedByFlowHasNoInputsAttachmentsOrTimeWindows() {
         val signedTransaction = runTokenSendFlowInitiator()
         assertEquals(0, signedTransaction.tx.inputs.size)
@@ -111,7 +119,7 @@ class FlowTests {
         assertEquals(1, signedTransaction.tx.attachments.size)
         assertNull(signedTransaction.tx.timeWindow)
     }
-    
+
     private fun runTokenSendFlowInitiator(): SignedTransaction {
         val flow = TokenSendFlowInitiator(bob, 99)
         val future = nodeA.startFlow(flow)

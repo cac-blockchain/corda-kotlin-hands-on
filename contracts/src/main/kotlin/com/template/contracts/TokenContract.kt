@@ -5,6 +5,7 @@ import net.corda.core.contracts.*
 import net.corda.core.contracts.Requirements.using
 import net.corda.core.transactions.LedgerTransaction
 
+// ① Contractであること
 class TokenContract : Contract {
     companion object {
         // Used to identify our contract when building a transaction.
@@ -15,19 +16,20 @@ class TokenContract : Contract {
     // does not throw an exception.
     override fun verify(tx: LedgerTransaction) {
         // Verification logic goes here.
+        // ⑤ TokenContractのコマンドがCreateであること
         val command = tx.commands.requireSingleCommand<Commands.Create>()
         val outputs = tx.outputsOfType<TokenState>()
         requireThat {
-            "No inputs should be consumed.".using(tx.inputStates.isEmpty())
-            "Output must be only 1.".using(outputs.size == 1)
+            "② TokenContractのinputが0であること".using(tx.inputStates.isEmpty())
+            "③ TokenContractのoutputが1つであること".using(outputs.size == 1)
             val output = outputs.single()
-            "Has zero-amount TokenState.".using(output.amount != 0)
-            "Has negative-amount TokenState.".using(output.amount >= 0)
+            "④ outputのAmountが正の整数であること".using(output.amount != 0 && output.amount >= 0)
             checkSigners(output, command)
         }
     }
 
     private fun checkSigners(state: TokenState, command: CommandWithParties<Commands>) {
+        // ⑦ 必須の署名者が指定されていること
         "Sender must be a signer." using command.signers.contains(state.sender.owningKey)
         "Receiver must be a signer." using command.signers.contains(state.receiver.owningKey)
     }

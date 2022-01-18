@@ -20,31 +20,27 @@ class TokenSendFlowInitiator(
     @Suspendable
     override fun call(): SignedTransaction {
         // We choose our transaction's notary (the notary prevents double-spends).
+        // ① 正しいノータリーを使用していること
         val notary = serviceHub.networkMapCache.notaryIdentities[0]
         // We get a reference to our own identity.
         val sender = ourIdentity
 
-        /* ============================================================================
-         *      TODO 1 - Create our TokenState to represent on-ledger tokens!
-         * ===========================================================================*/
         // We create our new TokenState.
+        // ② 正しいStateをoutputとしていること
         val tokenState = TokenState(sender, receiver, amount)
 
-        /* ============================================================================
-         *      TODO 3 - Build our token issuance transaction to update the ledger!
-         * ===========================================================================*/
         // We build our transaction.
+        // ③ 正しいコマンドを使用していること
+        // ④ 正しい署名者を指定していること
         val txCommand = Command(
             TokenContract.Commands.Create(),
             listOf(sender.owningKey, receiver.owningKey)
         )
+        // ⑤ 正しいContractを使用していること
         val txBuilder = TransactionBuilder(notary)
             .addOutputState(tokenState, TokenContract.ID)
             .addCommand(txCommand)
 
-        /* ============================================================================
-         *       TODO 2 - Write our TokenContract to control token issuance!
-         * ===========================================================================*/
         // We check our transaction is valid based on its contracts.
         txBuilder.verify(serviceHub)
 

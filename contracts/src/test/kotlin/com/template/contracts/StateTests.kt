@@ -14,7 +14,12 @@ class StateTests {
     private val alice: Party = TestIdentity(CordaX500Name("Alice", "Tokyo", "JP")).party
     private val bob: Party = TestIdentity(CordaX500Name("Bob", "NewYork", "US")).party
 
-    @Test // TokenStateが正しい型のパラメータを持つこと
+// TODO:
+//  ① TokenStateが正しい型のパラメータを持つこと
+//  ② ContractStateであること
+//  ③ senderとreceiverがParticipantsであること
+
+    @Test // ① TokenStateが正しい型のパラメータを持つこと
     fun tokenStateHasParamsOfCorrectTypeInConstructor() {
         val tokenState = TokenState(alice, bob, 100)
         assertEquals(alice, tokenState.sender)
@@ -22,12 +27,12 @@ class StateTests {
         assertEquals(100, tokenState.amount)
     }
 
-    @Test // ContractStateであること
+    @Test // ② ContractStateであること
     fun tokenContractImplementsContract() {
         assertTrue(TokenState(alice, bob, 100) is ContractState)
     }
 
-    @Test // senderとreceiverがParticipantsであること
+    @Test // ③ senderとreceiverがParticipantsであること
     fun tokenStateHasTwoParticipantsTheSenderAndTheReceiver() {
         val tokenState = TokenState(alice, bob, 100)
         assertEquals(2, tokenState.participants.size)
