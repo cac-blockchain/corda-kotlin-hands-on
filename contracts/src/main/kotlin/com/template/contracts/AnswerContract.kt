@@ -16,7 +16,6 @@ import net.corda.core.transactions.LedgerTransaction
 //    // does not throw an exception.
 //    override fun verify(tx: LedgerTransaction) {
 //        // Verification logic goes here.
-//        // ⑤ TokenContractのコマンドがCreateであること
 //        val command = tx.commands.requireSingleCommand<Commands.Create>()
 //        val outputs = tx.outputsOfType<TokenState>()
 //        requireThat {
@@ -29,13 +28,14 @@ import net.corda.core.transactions.LedgerTransaction
 //    }
 //
 //    private fun checkSigners(state: TokenState, command: CommandWithParties<Commands>) {
-//        // ⑦ 必須の署名者が指定されていること
+//        // ⑥ 必須の署名者が指定されていること
 //        "Sender must be a signer." using command.signers.contains(state.sender.owningKey)
 //        "Receiver must be a signer." using command.signers.contains(state.receiver.owningKey)
 //    }
 //
 //    // Used to indicate the transaction's intent.
 //    interface Commands : CommandData {
+//        ⑤ TokenContractのコマンドがCreateであること
 //        class Create : Commands
 //    }
 //}
