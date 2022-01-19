@@ -19,24 +19,24 @@ class StateTests {
 //  ② ContractStateであること
 //  ③ senderとreceiverがParticipantsであること
 
-    @Test // ① TokenStateが正しい型のパラメータを持つこと
-    fun tokenStateHasParamsOfCorrectTypeInConstructor() {
-        val tokenState = TokenState(alice, bob, 100)
-        assertEquals(alice, tokenState.sender)
-        assertEquals(bob, tokenState.receiver)
-        assertEquals(100, tokenState.amount)
-    }
-
-    @Test // ② ContractStateであること
-    fun tokenContractImplementsContract() {
-        assertTrue(TokenState(alice, bob, 100) is ContractState)
-    }
-
-    @Test // ③ senderとreceiverがParticipantsであること
-    fun tokenStateHasTwoParticipantsTheSenderAndTheReceiver() {
-        val tokenState = TokenState(alice, bob, 100)
-        assertEquals(2, tokenState.participants.size)
-        assertTrue(tokenState.participants.contains(alice))
-        assertTrue(tokenState.participants.contains(bob))
-    }
+//    @Test // ① TokenStateが正しい型のパラメータを持つこと
+//    fun tokenStateHasParamsOfCorrectTypeInConstructor() {
+//        val tokenState = TokenState(alice, bob, 100)
+//        assertEquals(alice, tokenState.sender)
+//        assertEquals(bob, tokenState.receiver)
+//        assertEquals(100, tokenState.amount)
+//    }
+//
+//    @Test // ② ContractStateであること
+//    fun tokenContractImplementsContract() {
+//        assertTrue(TokenState(alice, bob, 100) is ContractState)
+//    }
+//
+//    @Test // ③ senderとreceiverがParticipantsであること
+//    fun tokenStateHasTwoParticipantsTheSenderAndTheReceiver() {
+//        val tokenState = TokenState(alice, bob, 100)
+//        assertEquals(2, tokenState.participants.size)
+//        assertTrue(tokenState.participants.contains(alice))
+//        assertTrue(tokenState.participants.contains(bob))
+//    }
 }
